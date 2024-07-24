@@ -18,7 +18,9 @@ class TaskListView(generic.ListView):
     context_object_name = "task_list"
     template_name = "todo/task_list.html"
     paginate_by = 3
-    queryset = Task.objects.prefetch_related("tags")
+
+    def get_queryset(self):
+        return Task.objects.prefetch_related('tags').order_by('done', '-datetime')
 
 
 class TaskCreateView(generic.CreateView):
