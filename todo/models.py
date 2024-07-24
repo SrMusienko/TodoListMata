@@ -22,5 +22,3 @@ class Task(models.Model):
             '%Y-%m-%d %H:%M:%S'
         ) if self.deadline else 'No deadline'
         return f"{self.content[:10]} - deadline at: {deadline_str}"
-
-
