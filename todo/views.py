@@ -10,7 +10,7 @@ def mark(request, pk):
     task.done = not task.done
     task.save()
 
-    return redirect('task-list')
+    return redirect("task-list")
 
 
 class TaskListView(generic.ListView):
@@ -20,7 +20,12 @@ class TaskListView(generic.ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Task.objects.prefetch_related('tags').order_by('done', '-datetime')
+        return Task.objects.prefetch_related(
+            "tags"
+        ).order_by(
+            "done",
+            "-datetime"
+        )
 
 
 class TaskCreateView(generic.CreateView):
