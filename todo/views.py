@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import generic
+
+from todo.models import Task
 
 
 def index(request):
@@ -19,4 +23,33 @@ def index(request):
     }
 
     return render(request, "todo/index.html", context=context)
+
+
+class TaskListView(generic.ListView):
+    model = Task
+    context_object_name = "task_list"
+    template_name = "todo/task_list.html"
+    paginate_by = 5
+    queryset = Task.objects.prefetch_related("tags")
+
+
+class TaskCreateView(generic.CreateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("task")
+    template_name = "todo/task_form.html"
+
+
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("task")
+    template_name = "todo/task_form.html"
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task:position-list")
+    template_name = "todo/task_confirm_delete.html"
+
 
